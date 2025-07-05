@@ -2,13 +2,8 @@ import string
 import random
 from datetime import datetime
 
-def is_common_password(user_password, filename='common_passwords.txt'):
-    with open(filename, 'r', encoding='utf-8', errors='ignore') as file:
-        for line in file:
-            if user_password.strip().lower() == line.strip().lower():
-                return True
-    return False
-
+with open("common_passwords.txt", "r") as file:
+    common_passwords = [line.strip().lower() for line in file]
 
 def generate_strong_password(length = 12):
     characters = string.ascii_letters + string.digits + string.punctuation
@@ -26,7 +21,7 @@ def log_password_attempt(password, valid, reasons):
 def password_strength_checker(password):
     reasons = []
     # checks if the password is common
-    if is_common_password(password):
+    if password.lower() in common_passwords:
         reasons.append("Common password")
         log_password_attempt(password, False, reasons)
         print("This password is one of the most common to guess, try a stronger password.")
